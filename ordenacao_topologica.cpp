@@ -11,6 +11,7 @@ class Grafo{
 
     void ordenacaoTopologicaUtil(int v, bool visitado[], stack<int>& pilha){
         visitado[v] = true;
+        cout << "Visitando o vértice: " << v << endl;
 
         for (auto i = adj[v].begin(); i != adj[v].end(); i++){
             if (!visitado[*i]){
@@ -79,5 +80,5 @@ int main(){
     g.ordenacaoTopologica();
 
     return 0;
-    
+
 }
