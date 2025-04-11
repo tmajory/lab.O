@@ -64,20 +64,57 @@ class Grafo{
         delete[] visitado;
     }
 
+    void buscaProfundidade() {
+        string* cor = new string[V]; // "Branca", "Cinza", "Preta"
+
+        // Inicializa todos os vértices como "Branca"
+        for (int i = 0; i < V; i++) {
+            cor[i] = "Branca";
+        }
+
+        // Visita cada vértice não explorado
+        for (int v = 0; v < V; v++) {
+            if (cor[v] == "Branca") {
+                visitar(v, cor);
+            }
+        }
+
+        delete[] cor; // Libera a memória
+    }
+
+private:
+    // Função auxiliar para visitar vértices recursivamente
+    void visitar(int v, string* cor) {
+        cor[v] = "Cinza";
+        cout << "Visitando vértice: " << v << endl;
+
+        // Percorre todos os vértices adjacentes
+        for (auto it = adj[v].begin(); it != adj[v].end(); ++it) {
+            int u = *it; // Vértice adjacente
+            if (cor[u] == "Branca") {
+                visitar(u, cor);
+            }
+        }
+
+        cor[v] = "Preta";
+    }
+
 
 };
 
 int main(){
-    Grafo g(6);
-    g.adicionaAresta(5, 2);
-    g.adicionaAresta(5, 0);
-    g.adicionaAresta(4, 0);
-    g.adicionaAresta(4, 1);
+    Grafo g(5);
+    g.adicionaAresta(0, 2);
+    g.adicionaAresta(0, 1);
+    g.adicionaAresta(1, 3);
     g.adicionaAresta(2, 3);
-    g.adicionaAresta(3, 1);
+    g.adicionaAresta(3, 4); 
+    g.adicionaAresta(2, 4);
 
 
     g.ordenacaoTopologica();
+    g.buscaProfundidade();
+    
 
     return 0;
 
