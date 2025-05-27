@@ -12,13 +12,13 @@ struct Aresta{
 };
 
 
-class Graph{
+class Grafo{
     private:
         vector<vector<Aresta>> listaAdj;
         int numVertices;
     
     public:
-        Graph(int n): numVertices(n), listaAdj(n){}
+        Grafo(int n): numVertices(n), listaAdj(n){}
 
         void addAresta(int origem, int destino, int custo){
             listaAdj[origem].push_back({destino, custo});

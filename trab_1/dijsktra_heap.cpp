@@ -4,6 +4,7 @@
 #include <fstream>
 #include <vector>
 
+
 struct ResultadoDijkstra{
     vector<int> custos;
     vector<int> predecessores;
@@ -11,7 +12,7 @@ struct ResultadoDijkstra{
     double tempoExecucao;
 };
 
-ResultadoDijkstra dijkstraHeap(const Graph& g, int origem, ofstream& outfile)
+ResultadoDijkstra dijkstraHeap(const Grafo& g, int origem, int destino, ofstream& outfile)
 {
     int n = g.getNumVertices();
     ResultadoDijkstra resultado;
@@ -30,6 +31,7 @@ ResultadoDijkstra dijkstraHeap(const Graph& g, int origem, ofstream& outfile)
         HeapItem item = heap.removerMinimo();
         int u = (int)(long)item.data;
 
+        if (u == destino) break;
         if (visited[u]) continue;
         visited[u] = true;
         resultado.verticesVisitados++;
@@ -67,17 +69,17 @@ int main(int argc, char* argv[]) {
     inFile >> origem; 
     inFile >> destino;
 
-    Graph g(n);
+    Grafo g(n);
     int u, v, custo;
     while (inFile >> u >> v >> custo) {
         g.addAresta(u, v, custo);
     }
 
     // Chamada para a versão com heap
-    ResultadoDijkstra resultado = dijkstraHeap(g, origem, outFile);
+    ResultadoDijkstra resultado = dijkstraHeap(g, origem, destino, outFile);
     
     // Escreve resultados no arquivo
-    outFile << resultado.verticesVisitados << "," << resultado.tempoExecucao << "\n"; 
+    outFile <<resultado.custos[destino] << ", " << resultado.verticesVisitados << ", " << resultado.tempoExecucao << "\n"; 
     // outFile << "Resultado Dijkstra com Heap:\n";
     // for (int i = 0; i < n; i++) {
     //     outFile << "Vertice " << i << " custo: " << resultado.custos[i] << " pred: " << resultado.predecessores[i]<<"\n";
