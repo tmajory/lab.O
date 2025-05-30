@@ -3,6 +3,7 @@
 #include <chrono>
 #include <fstream>
 #include <vector>
+#include <cstdint>
 
 
 struct ResultadoDijkstra{
@@ -22,14 +23,14 @@ ResultadoDijkstra dijkstraHeap(const Grafo& g, int origem, int destino, ofstream
     vector<bool> visited(n, false);
 
     Heap heap(n);
-    heap.inserir(0, (void*)(long)origem);
+    heap.inserir(0, (void*)(uintptr_t)origem);
     resultado.custos[origem]=0;
 
     auto inicio = chrono::high_resolution_clock::now();
 
     while (heap.getTamanho() > 0){
         HeapItem item = heap.removerMinimo();
-        int u = (int)(long)item.data;
+        int u = (int)(uintptr_t)item.data;
 
         if (u == destino) break;
         if (visited[u]) continue;
@@ -44,7 +45,7 @@ ResultadoDijkstra dijkstraHeap(const Grafo& g, int origem, int destino, ofstream
             if (newDist < resultado.custos[v]){
                 resultado.custos[v] = newDist;
                 resultado.predecessores[v] = u;
-                heap.inserir(newDist, (void*)(long)v);
+                heap.inserir(newDist, (void*)(uintptr_t)v);
             }
         }
     }
