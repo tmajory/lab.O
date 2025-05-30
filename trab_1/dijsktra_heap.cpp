@@ -51,7 +51,7 @@ ResultadoDijkstra dijkstraHeap(const Grafo& g, int origem, int destino, ofstream
     }
 
     auto fim = chrono::high_resolution_clock::now();
-    resultado.tempoExecucao = chrono::duration_cast<chrono::milliseconds>(fim - inicio).count();
+    resultado.tempoExecucao = chrono::duration_cast<chrono::microseconds>(fim - inicio).count();
 
     return resultado;
 }
