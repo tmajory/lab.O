@@ -17,7 +17,7 @@ def ler_resultados(arquivo):
 
 
 def gerar_relatorio(df):
-    print("\n📊 ==== Relatório de Resultados ====\n")
+    print("\n ==== Relatório de Resultados ====\n")
     print(df)
     print("\nResumo estatístico:\n")
     print(df.describe())
@@ -51,13 +51,13 @@ def salvar_csv(df, nome_arquivo="relatorio.csv"):
 
 
 if __name__ == "__main__":
-    arquivo = input("resultadodijkstra.txt")
+    arquivo = "resultadodijkstra.txt"
 
     df = ler_resultados(arquivo)
 
     if df is not None:
         gerar_relatorio(df)
-        
+
         opcao_grafico = input("Deseja gerar gráficos? (s/n): ").lower()
         if opcao_grafico == 's':
             gerar_graficos(df)
