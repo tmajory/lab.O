@@ -1,5 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import os
 
 
 def ler_resultados(arquivo):
@@ -51,7 +52,8 @@ def salvar_csv(df, nome_arquivo="relatorio.csv"):
 
 
 if __name__ == "__main__":
-    arquivo = "resultadodijkstra.txt"
+    print(os.getcwd())
+    arquivo = os.getcwd()+"/resultadodijkstra.txt"
 
     df = ler_resultados(arquivo)
 
