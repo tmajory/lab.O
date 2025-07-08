@@ -2,15 +2,15 @@ import random as rd
 import os
 import networkx as nx
 
-def gerarInstancia(n, densidade, instancia_id, pasta_saida, C):
-    m = int(densidade * n * (n - 1))  # número de arcos
+def gerar_instancia(n, densidade, instancia_id, pasta_saida, C):
+    m = int(densidade * n * (n - 1))
     s = 0
     t = n - 1
 
-    rd.seed(1000 * n + int(densidade * 10000) + instancia_id)  # Seed única por configuração
+    rd.seed(1000 * n + int(densidade * 10000) + instancia_id)
 
     A = dict()
-    vertices_no_caminho = list(range(s, t + 1))  # Caminho garantido de s até t
+    vertices_no_caminho = list(range(s, t + 1))
     for i in range(len(vertices_no_caminho) - 1):
         a = vertices_no_caminho[i]
         b = vertices_no_caminho[i + 1]
@@ -37,7 +37,6 @@ def gerarInstancia(n, densidade, instancia_id, pasta_saida, C):
         for (a, b), custo in A.items():
             saida.write(f'{a} {b} {custo}\n')
 
-    # === Análise estatística ===
     G = nx.DiGraph()
     G.add_nodes_from(range(n))
     for (a, b), custo in A.items():
@@ -45,7 +44,6 @@ def gerarInstancia(n, densidade, instancia_id, pasta_saida, C):
 
     densidade_grafo = nx.density(G)
 
-    # Maior componente fortemente conexa
     componentes = list(nx.strongly_connected_components(G))
     maior_comp = max(componentes, key=len)
     H = G.subgraph(maior_comp)
@@ -63,7 +61,6 @@ def gerarInstancia(n, densidade, instancia_id, pasta_saida, C):
     except:
         clusterizacao = -1
 
-    # Exportar estatísticas
     stats_path = os.path.join(pasta_saida, nome_base + '.stats')
     with open(stats_path, 'w') as f:
         f.write(f'Vertices: {n}\n')
@@ -75,7 +72,8 @@ def gerarInstancia(n, densidade, instancia_id, pasta_saida, C):
 
 
 if __name__ == '__main__':
-    tamanhos = [100, 500, 1000, 5000, 10000, 50000]
+    tamanhos = [#100, 500, 1000, 5000, 10000, 
+                50000]
     densidades = [0.001, 0.0025, 0.003, 0.005]
     num_instancias = 5
     C = 5
