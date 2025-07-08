@@ -25,25 +25,55 @@ def gerar_relatorio(df):
 
 
 def gerar_graficos(df):
-    plt.figure(figsize=(10, 6))
-    plt.subplot(2, 1, 1)
-    plt.plot(df["Tempo Execução (ms)"], marker="o", label="Tempo (ms)", color="blue")
+    # plt.figure(figsize=(10, 6))
+    # plt.subplot(2, 1, 1)
+    # plt.plot(df["Tempo Execução (ms)"], marker="o", label="Tempo (ms)", color="blue")
+    # plt.title("Tempo de Execução por Instância")
+    # plt.xlabel("Instância")
+    # plt.ylabel("Tempo (ms)")
+    # plt.grid(True)
+    # plt.legend()
+
+    # plt.subplot(2, 1, 2)
+    # plt.plot(df["Vertices Visitados"], marker="s", label="Vértices Visitados", color="green")
+    # plt.title("Vértices Visitados por Instância")
+    # plt.xlabel("Instância")
+    # plt.ylabel("Nº de Vértices Visitados")
+    # plt.grid(True)
+    # plt.legend()
+    plt.figure(figsize=(12, 8))
+    
+    # Cores para cada instância (ex: 3 instâncias -> 3 cores)
+    cores = plt.cm.tab10.colors[:len(df)]
+    
+    # Subplot 1: Tempo
+    plt.subplot(3, 1, 1)
+    for i, (idx, row) in enumerate(df.iterrows()):
+        plt.plot(row["Tempo Execução (ms)"], marker="o", label=f"Instância {i+1}", color=cores[i])
     plt.title("Tempo de Execução por Instância")
-    plt.xlabel("Instância")
     plt.ylabel("Tempo (ms)")
     plt.grid(True)
     plt.legend()
-
-    plt.subplot(2, 1, 2)
-    plt.plot(df["Vertices Visitados"], marker="s", label="Vértices Visitados", color="green")
-    plt.title("Vértices Visitados por Instância")
-    plt.xlabel("Instância")
-    plt.ylabel("Nº de Vértices Visitados")
+    
+    # Subplot 2: Vértices Visitados
+    plt.subplot(3, 1, 2)
+    for i, (idx, row) in enumerate(df.iterrows()):
+        plt.plot(row["Vertices Visitados"], marker="s", color=cores[i])
+    plt.ylabel("Vértices Visitados")
     plt.grid(True)
-    plt.legend()
+    
+    # Subplot 3: Custo
+    plt.subplot(3, 1, 3)
+    for i, (idx, row) in enumerate(df.iterrows()):
+        plt.plot(row["Custo"], marker="^", color=cores[i])
+    plt.xlabel("Instância")
+    plt.ylabel("Custo")
+    plt.grid(True)
+    # plt.show()
 
     plt.tight_layout()
-    plt.show()
+    plt.savefig('grafico.jpg')
+    # plt.show()
 
 
 def salvar_csv(df, nome_arquivo="relatorio.csv"):
