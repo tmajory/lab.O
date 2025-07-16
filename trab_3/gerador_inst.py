@@ -2,19 +2,21 @@ import random as rd
 import os
 import networkx as nx
 
-def gerar_instancia(n, densidade, instancia_id, pasta_saida, C):
+def gerar_instancias(n, densidade, instancia_id, pasta_saida, C):
     m = int(densidade * n * (n - 1))
     s = 0
     t = n - 1
 
     rd.seed(1000 * n + int(densidade * 10000) + instancia_id)
 
+    # Gerar posições espaciais
+    posicoes = [(rd.uniform(0, 1000), rd.uniform(0, 1000)) for _ in range(n)]
+
     A = dict()
-    vertices_no_caminho = list(range(s, t + 1))
-    for i in range(len(vertices_no_caminho) - 1):
-        a = vertices_no_caminho[i]
-        b = vertices_no_caminho[i + 1]
+    for i in range(n - 1):  # caminho garantido
+        a, b = i, i + 1
         custo = rd.randint(1, C)
+        # custo = math.hypot(posicoes[a][0] - posicoes[b][0], posicoes[a][1] - posicoes[b][1])
         A[(a, b)] = custo
 
     contArcos = len(A)
@@ -24,6 +26,7 @@ def gerar_instancia(n, densidade, instancia_id, pasta_saida, C):
         if a == b or (a, b) in A:
             continue
         custo = rd.randint(1, C)
+        # custo = math.hypot(posicoes[a][0] - posicoes[b][0], posicoes[a][1] - posicoes[b][1])
         A[(a, b)] = custo
         contArcos += 1
 
@@ -34,11 +37,15 @@ def gerar_instancia(n, densidade, instancia_id, pasta_saida, C):
         saida.write(f'{n}\n')
         saida.write(f'{s}\n')
         saida.write(f'{t}\n')
+        for x, y in posicoes:
+            saida.write(f'{x:.4f} {y:.4f}\n')
         for (a, b), custo in A.items():
             saida.write(f'{a} {b} {custo}\n')
 
+    # Análise com NetworkX
     G = nx.DiGraph()
-    G.add_nodes_from(range(n))
+    for i in range(n):
+        G.add_node(i, pos=posicoes[i])
     for (a, b), custo in A.items():
         G.add_edge(a, b, weight=custo)
 
@@ -68,14 +75,20 @@ def gerar_instancia(n, densidade, instancia_id, pasta_saida, C):
         f.write(f'Densidade: {densidade_grafo:.6f}\n')
         f.write(f'Diametro: {diametro}\n')
         f.write(f'Excentricidade media: {exc_media:.6f}\n')
-        f.write(f'Clusterizacaoo global: {clusterizacao:.6f}\n')
+        f.write(f'Clusterizacao global: {clusterizacao:.6f}\n')
+
 
 
 if __name__ == '__main__':
-    tamanhos = [#100, 500, 1000, 5000, 10000, 
-                50000]
+    tamanhos = [
+                # 1000, 1200, 1400, 
+                1500, 
+                # 1600, 1800, 2000, 
+                2200, 2400
+                # , 2500
+                ]
     densidades = [0.001, 0.0025, 0.003, 0.005]
-    num_instancias = 5
+    num_instancias = 10
     C = 5
 
     pasta_saida = 'instancias'
@@ -85,4 +98,4 @@ if __name__ == '__main__':
         for d in densidades:
             for i in range(num_instancias):
                 print(f'Gerando grafo n={n}, d={d:.4f}, instância={i}')
-                gerarInstancia(n, d, i, pasta_saida, C)
+                gerar_instancias(n, d, i, pasta_saida, C)
