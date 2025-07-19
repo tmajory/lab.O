@@ -1,6 +1,8 @@
 # Prerequisites
 *.d
 
+/instancias
+
 # Compiled Object files
 *.slo
 *.lo
@@ -31,5 +33,5 @@
 *.out
 *.app
 .vscode/
-*.csv
-*.bin
+*dijkstra 
+*dijsktra
